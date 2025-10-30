@@ -3,6 +3,8 @@
 
 #include "library.h"
 
+#include <cctype>
+
 using namespace std;
 
 // Constructor
@@ -202,3 +204,53 @@ int Library::getAvailableBookCount() const {
         });
 }
 int Library::getCheckedOutBookCount() const { return getTotalBooks() - getAvailableBookCount(); }
+
+vector<Book*> Library::getBooksSortedByTitle() const {
+    vector<Book*> v;
+    for (auto &p : books) v.push_back(p.get());
+    sort(v.begin(),v.end(),[](Book* a,Book* b){
+        return a->getTitle() < b->getTitle();
+    });
+    return v;
+}
+
+void Library::displayBooksSortedByTitle() const {
+    auto v = getBooksSortedByTitle();
+
+    if(v.empty()){
+        cout << "Pas de livres dans la biblio\n";
+        return;
+    }
+
+    cout << "\nLivres selon le titre\n";
+    for(size_t i=0;i<v.size(); ++i){
+        cout << "\nLivre" << (i+1) << ":\n"
+        << v[i]->toString(); 
+        cout << "------------------------------\n";
+    }
+}
+
+vector<Book*> Library::getBooksSortedByAuthor() const {
+    vector<Book*> v;
+    for (auto &p : books) v.push_back(p.get());
+    sort(v.begin(),v.end(),[](Book* a,Book* b){
+        return a->getAuthor() < b->getAuthor();
+    });
+    return v;
+}
+
+void Library::displayBooksSortedByAuthor() const {
+    auto v = getBooksSortedByAuthor();
+
+    if(v.empty()){
+        cout << "Pas de livres dans la biblio\n";
+        return;
+    }
+
+    cout << "\nLivres selon l'auteur\n";
+    for(size_t i=0;i<v.size(); ++i){
+        cout << "\nLivre" << (i+1) << ":\n"
+        << v[i]->toString(); 
+        cout << "------------------------------\n";
+    }
+}
